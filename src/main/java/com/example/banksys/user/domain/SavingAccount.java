@@ -3,11 +3,10 @@ package com.example.banksys.user.domain;
 import java.math.BigDecimal;
 import java.util.List;
 
-
 /**
- * prim account entity
+ * saving trans entity
  */
-public class PrimaryAccount {
+public class SavingAccount {
 
 
     private Long id;
@@ -15,10 +14,7 @@ public class PrimaryAccount {
     private BigDecimal accountBalance;
 
 
-    private List<PrimaryTransaction> primaryTransactions;
-
-
-
+    private List<SavingTransaction> savingTransactionList;
 
 
     public Long getId() {
@@ -45,14 +41,11 @@ public class PrimaryAccount {
         this.accountBalance = accountBalance;
     }
 
-    public List<PrimaryTransaction> getPrimaryTransactions() {
-        return primaryTransactions;
+    public List<SavingTransaction> getSavingTransactionList() {
+        return savingTransactionList;
     }
 
-    public void setPrimaryTransactions(List<PrimaryTransaction> primaryTransactions) {
-        this.primaryTransactions = primaryTransactions;
+    public void setSavingTransactionList(List<SavingTransaction> savingTransactionList) {
+        this.savingTransactionList = savingTransactionList;
     }
 }
-
-
-

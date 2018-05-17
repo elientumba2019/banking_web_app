@@ -1,8 +1,11 @@
 package com.example.banksys.user.domain;
-
 import java.util.List;
 import java.util.Objects;
 
+
+/**
+ * user entity
+ */
 public class User {
 
     private Long userID;
