@@ -20,8 +20,6 @@ public class HomeControllers {
     private static final String EMAIL_EXIST = "emais exist";
     private static final String USERNAME_EXIST = "username exist";
 
-
-
     private UserService userService;
 
 
@@ -30,7 +28,6 @@ public class HomeControllers {
     public HomeControllers(UserService userService) {
         this.userService = userService;
     }
-
 
 
     @GetMapping("/")
