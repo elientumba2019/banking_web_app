@@ -11,8 +11,8 @@ public class User {
     private Long userID;
     private String username;
     private String password;
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private String  email;
     private String phone;
 
@@ -51,20 +51,20 @@ public class User {
         this.password = password;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -130,8 +130,8 @@ public class User {
                 "userID=" + userID +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", enable=" + enable +
@@ -152,8 +152,8 @@ public class User {
                 Objects.equals(userID, user.userID) &&
                 Objects.equals(username, user.username) &&
                 Objects.equals(password, user.password) &&
-                Objects.equals(firstname, user.firstname) &&
-                Objects.equals(lastname, user.lastname) &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(lastName, user.lastName) &&
                 Objects.equals(email, user.email) &&
                 Objects.equals(phone, user.phone) &&
                 Objects.equals(primaryAccount, user.primaryAccount) &&
@@ -165,6 +165,6 @@ public class User {
     @Override
     public int hashCode() {
 
-        return Objects.hash(userID, username, password, firstname, lastname, email, phone, enable, primaryAccount, savingAccount, appointmentList, recipientList);
+        return Objects.hash(userID, username, password, firstName, lastName, email, phone, enable, primaryAccount, savingAccount, appointmentList, recipientList);
     }
 }
