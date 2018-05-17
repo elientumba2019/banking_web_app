@@ -1,4 +1,7 @@
 package com.example.banksys.user.domain;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
@@ -6,33 +9,50 @@ import java.util.Objects;
 /**
  * user entity
  */
+
+@Entity
 public class User {
 
-    private Long userID;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "userId" , nullable = false , updatable = false)
+    private Long userId;
+
     private String username;
     private String password;
     private String firstName;
     private String lastName;
+
+    @Column(name = "email" , nullable = false , unique = true)
     private String  email;
+
     private String phone;
 
     private boolean enable = true;
 
+    @OneToOne
     private PrimaryAccount primaryAccount;
+
+    @OneToOne
     private SavingAccount savingAccount;
+
+    @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL , fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Appointment> appointmentList;
+
+    @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL , fetch = FetchType.LAZY)
     private List<Recipient> recipientList;
 
 
     public User() {
     }
 
-    public Long getUserID() {
-        return userID;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUserID(Long userID) {
-        this.userID = userID;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -127,7 +147,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "userID=" + userID +
+                "userId=" + userId +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
@@ -149,7 +169,7 @@ public class User {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return enable == user.enable &&
-                Objects.equals(userID, user.userID) &&
+                Objects.equals(userId, user.userId) &&
                 Objects.equals(username, user.username) &&
                 Objects.equals(password, user.password) &&
                 Objects.equals(firstName, user.firstName) &&
@@ -165,6 +185,6 @@ public class User {
     @Override
     public int hashCode() {
 
-        return Objects.hash(userID, username, password, firstName, lastName, email, phone, enable, primaryAccount, savingAccount, appointmentList, recipientList);
+        return Objects.hash(userId, username, password, firstName, lastName, email, phone, enable, primaryAccount, savingAccount, appointmentList, recipientList);
     }
 }

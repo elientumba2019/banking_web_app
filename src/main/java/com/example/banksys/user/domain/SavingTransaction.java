@@ -1,12 +1,19 @@
 package com.example.banksys.user.domain;
 
+import org.hibernate.annotations.ManyToAny;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
+
+@Entity
 public class SavingTransaction {
 
 
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Date date;
     private String desciption;
@@ -15,6 +22,9 @@ public class SavingTransaction {
     private double amount;
     private BigDecimal availableBalance;
 
+
+    @ManyToOne
+    @JoinColumn(name = "savings_account_id")
     private SavingAccount savingAccount;
 
 
