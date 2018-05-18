@@ -1,5 +1,7 @@
 package com.example.banksys.user.controllers;
 import com.example.banksys.user.domain.User;
+import com.example.banksys.user.domain.security.UserRole;
+import com.example.banksys.user.service.RoleService;
 import com.example.banksys.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -7,6 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -21,12 +26,14 @@ public class HomeControllers {
     private static final String USERNAME_EXIST = "username exist";
 
     private UserService userService;
+    private RoleService roleService;
 
 
 
     @Autowired
-    public HomeControllers(UserService userService) {
+    public HomeControllers(UserService userService , RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
 
@@ -72,9 +79,9 @@ public class HomeControllers {
         }
         else{
 
-            //Set<UserRole> userRoles = new HashSet<>();
-            //userRoles.add(new UserRole(user , roleDao.findByName("USER")));
-            userService.saveUser(user);
+            Set<UserRole> userRoles = new HashSet<>();
+            userRoles.add(new UserRole(user , roleService.findByName("USER")));
+            userService.createUser(user ,userRoles);
         }
 
 
