@@ -1,6 +1,7 @@
 package com.example.banksys.user.config;
 
 
+import com.example.banksys.user.service.UserSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,11 +24,19 @@ import java.security.SecureRandom;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
-    @Autowired
+
     private Environment env;
+    private UserSecurityService userSecurityService;
+
+
+
 
     @Autowired
-    private UserSecurityService userSecurityService;
+    public SecurityConfig(Environment env, UserSecurityService userSecurityService) {
+        this.env = env;
+        this.userSecurityService = userSecurityService;
+    }
+
 
 
     private static final String SALT = "SALT";
@@ -60,8 +69,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(PUBLIC_MATCHERS)
                 .permitAll().anyRequest().authenticated();
-
-
         http
                 .csrf().disable().cors().disable()
                 .formLogin().failureUrl("/index?error")
@@ -71,7 +78,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                     .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                    .logoutSuccessUrl("index?logout")
+                    .logoutSuccessUrl("/index?logout")
                     .deleteCookies("remember-me")
                     .permitAll()
                 .and()
