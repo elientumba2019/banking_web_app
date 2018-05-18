@@ -7,9 +7,10 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
-@Service
 @Transactional
+@Service
 public class RoleServiceImpl implements RoleService {
+
 
     private RoleDao roleDao;
 

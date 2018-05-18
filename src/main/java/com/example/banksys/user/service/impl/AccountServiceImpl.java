@@ -19,7 +19,7 @@ public class AccountServiceImpl implements AccountService {
 
     private PrimaryAccountDao primaryAccountDao;
     private SavingAccountDao savingAccountDao;
-    private static int nextAccountNumber = 11223145;
+    private static int nextAccountNumber = (int)(Math.random() * 1000000);
 
 
     @Autowired

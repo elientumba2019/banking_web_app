@@ -67,6 +67,8 @@ public class HomeControllers {
 
 
 
+        //TODO seems like the data from the form cannot be retrived this bug must be solved along with the email bug
+
         if(userService.checkUserExist(user.getUsername() , user.getEmail())){
             if(userService.checkEmailExist(user.getEmail())){
                 model.addAttribute(EMAIL_EXIST , true);
@@ -80,7 +82,7 @@ public class HomeControllers {
         else{
 
             Set<UserRole> userRoles = new HashSet<>();
-            userRoles.add(new UserRole(user , roleService.findByName("USER")));
+            userRoles.add(new UserRole(user , roleService.findByName("ROLE_USER")));
             userService.createUser(user ,userRoles);
         }
 

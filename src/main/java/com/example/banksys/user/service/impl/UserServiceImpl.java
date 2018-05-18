@@ -106,6 +106,7 @@ public class UserServiceImpl implements UserService {
         }
         else{
             String encryptedPassword = passwordEncoder.encode(user.getPassword());
+            localUser = new User();
             user.setPassword(encryptedPassword);
 
             for(UserRole ur : userRoles){
@@ -117,6 +118,8 @@ public class UserServiceImpl implements UserService {
             user.setSavingAccount(accountService.createSavingAccount());
 
 
+            //TODO this is a hard coded email must be removed later and the bug must be solved
+            localUser.setEmail("elientumba@live.fr");
             localUser = userDao.save(localUser);
         }
 
