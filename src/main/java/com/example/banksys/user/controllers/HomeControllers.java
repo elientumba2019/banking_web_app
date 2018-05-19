@@ -1,4 +1,6 @@
 package com.example.banksys.user.controllers;
+import com.example.banksys.user.domain.PrimaryAccount;
+import com.example.banksys.user.domain.SavingAccount;
 import com.example.banksys.user.domain.User;
 import com.example.banksys.user.domain.security.UserRole;
 import com.example.banksys.user.service.RoleService;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,8 +25,10 @@ import java.util.Set;
 public class HomeControllers {
 
     private static final String USER_NAME = "user";
-    private static final String EMAIL_EXIST = "emais exist";
-    private static final String USERNAME_EXIST = "username exist";
+    private static final String EMAIL_EXIST = "emailExists";
+    private static final String USERNAME_EXIST = "usernameExists";
+    private static final String PRIMARY_ACCOUNT = "primaryAccount";
+    private static final String SAVINGS_ACCOUNT = "savingsAccount";
 
     private UserService userService;
     private RoleService roleService;
@@ -88,6 +93,24 @@ public class HomeControllers {
 
         return "redirect:/";
 
+    }
+
+
+
+
+
+
+    @GetMapping("/userFront")
+    public String userFront(Principal principal , Model model){
+
+        User user = userService.findByUsername(principal.getName());
+        PrimaryAccount primaryAccount = user.getPrimaryAccount();
+        SavingAccount savingAccount = user.getSavingAccount();
+
+        model.addAttribute(PRIMARY_ACCOUNT , primaryAccount);
+        model.addAttribute(SAVINGS_ACCOUNT , savingAccount);
+
+        return "userFront";
     }
 
 

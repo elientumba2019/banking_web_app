@@ -28,6 +28,11 @@ public class PrimaryTransaction {
     public PrimaryTransaction(){ }
 
 
+    public PrimaryTransaction(Date date, String desciption) {
+        this.date = date;
+        this.desciption = desciption;
+    }
+
     public PrimaryTransaction(Date date,
                               String desciption,
                               String type,

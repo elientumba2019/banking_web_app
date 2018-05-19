@@ -32,13 +32,17 @@ public class UserServiceImpl implements UserService {
 
 
     @Autowired
-    public UserServiceImpl(UserDao userDao, RoleDao roleDao,  BCryptPasswordEncoder passwordEncoder , AccountService accountService) {
+    public UserServiceImpl(UserDao userDao, RoleDao roleDao,  BCryptPasswordEncoder passwordEncoder) {
         this.userDao = userDao;
         this.roleDao = roleDao;
         this.passwordEncoder = passwordEncoder;
-        this.accountService = accountService;
     }
 
+
+    @Autowired
+    public void setAccountService(AccountService accountService) {
+        this.accountService = accountService;
+    }
 
 
     @Override

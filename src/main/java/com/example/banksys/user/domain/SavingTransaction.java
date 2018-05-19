@@ -31,6 +31,13 @@ public class SavingTransaction {
     public SavingTransaction(){}
 
 
+    public SavingTransaction(Date date, String desciption) {
+        this.date = date;
+        this.desciption = desciption;
+    }
+
+
+
     public SavingTransaction(Date date,
                              String desciption,
                              String type,
