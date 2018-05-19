@@ -66,8 +66,8 @@ public class HomeControllers {
             , Model model){
 
 
+        System.out.println("Home controller : User : " + user.toString());
 
-        //TODO seems like the data from the form cannot be retrived this bug must be solved along with the email bug
 
         if(userService.checkUserExist(user.getUsername() , user.getEmail())){
             if(userService.checkEmailExist(user.getEmail())){
@@ -86,8 +86,8 @@ public class HomeControllers {
             userService.createUser(user ,userRoles);
         }
 
-
         return "redirect:/";
+
     }
 
 
