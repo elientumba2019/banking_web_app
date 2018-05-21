@@ -1,8 +1,11 @@
 package com.example.banksys.user.service.impl;
 
+import com.example.banksys.user.dao.PrimaryTransactionDao;
 import com.example.banksys.user.dao.SavingAccountDao;
+import com.example.banksys.user.dao.SavingTransactionDao;
 import com.example.banksys.user.domain.*;
 import com.example.banksys.user.service.AccountService;
+import com.example.banksys.user.service.TransactionService;
 import com.example.banksys.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,9 @@ public class AccountServiceImpl implements AccountService {
 
     private PrimaryAccountDao primaryAccountDao;
     private SavingAccountDao savingAccountDao;
+    PrimaryTransactionDao primaryTransactionDao;
+    private SavingTransactionDao savingTransactionDao;
+    private TransactionService transactionService;
     private UserService userService;
 
     private static int nextAccountNumber = (int)(Math.random() * 1000000);
@@ -34,10 +40,34 @@ public class AccountServiceImpl implements AccountService {
     }
 
 
+
+
+    @Autowired
+    public void setTransactionService(TransactionService transactionService) {
+        this.transactionService = transactionService;
+    }
+
+
+
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
+
+
+
+    @Autowired
+    public void setPrimaryTransactionDao(PrimaryTransactionDao primaryTransactionDao) {
+        this.primaryTransactionDao = primaryTransactionDao;
+    }
+
+
+
+    @Autowired
+    public void setSavingTransactionDao(SavingTransactionDao savingTransactionDao) {
+        this.savingTransactionDao = savingTransactionDao;
+    }
+
 
 
     @Override
@@ -82,6 +112,8 @@ public class AccountServiceImpl implements AccountService {
                     v,
                     primaryAccount.getAccountBalance(),
                     primaryAccount);
+
+            transactionService.savePrimaryDepositTransaction(pt);
         }
 
 
@@ -98,6 +130,7 @@ public class AccountServiceImpl implements AccountService {
                     v,
                     savingAccount.getAccountBalance(),
                     savingAccount);
+            transactionService.saveSavingDepositTransaction(savingTransaction);
         }
     }
 
@@ -124,6 +157,8 @@ public class AccountServiceImpl implements AccountService {
                     v,
                     primaryAccount.getAccountBalance(),
                     primaryAccount);
+
+            transactionService.savePrimaryWithdrawTransaction(pt);
         }
 
 
@@ -140,6 +175,8 @@ public class AccountServiceImpl implements AccountService {
                     v,
                     savingAccount.getAccountBalance(),
                     savingAccount);
+
+            transactionService.saveSavingWithdrawTransaction(savingTransaction);
         }
     }
 

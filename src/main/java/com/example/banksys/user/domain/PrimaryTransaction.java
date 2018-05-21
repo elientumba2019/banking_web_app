@@ -13,7 +13,7 @@ public class PrimaryTransaction {
     private Long id;
 
     private Date date;
-    private String desciption;
+    private String description;
     private String type;
     private String status;
     private double amount;
@@ -28,13 +28,13 @@ public class PrimaryTransaction {
     public PrimaryTransaction(){ }
 
 
-    public PrimaryTransaction(Date date, String desciption) {
+    public PrimaryTransaction(Date date, String description) {
         this.date = date;
-        this.desciption = desciption;
+        this.description = description;
     }
 
-    public PrimaryTransaction(Date date,
-                              String desciption,
+    public  PrimaryTransaction(Date date,
+                              String description,
                               String type,
                               String status,
                               double amount,
@@ -43,7 +43,7 @@ public class PrimaryTransaction {
 
 
         this.date = date;
-        this.desciption = desciption;
+        this.description = description;
         this.type = type;
         this.status = status;
         this.amount = amount;
@@ -67,12 +67,12 @@ public class PrimaryTransaction {
         this.date = date;
     }
 
-    public String getDesciption() {
-        return desciption;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesciption(String desciption) {
-        this.desciption = desciption;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getType() {

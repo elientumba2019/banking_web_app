@@ -1,9 +1,8 @@
 package com.example.banksys.user.controllers;
 
-import com.example.banksys.user.domain.PrimaryAccount;
-import com.example.banksys.user.domain.SavingAccount;
-import com.example.banksys.user.domain.User;
+import com.example.banksys.user.domain.*;
 import com.example.banksys.user.service.AccountService;
+import com.example.banksys.user.service.TransactionService;
 import com.example.banksys.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
+import java.util.List;
 
 
 /**
@@ -28,10 +28,15 @@ public class AccountController {
 
     private UserService userService;
     private AccountService accountService;
+    private TransactionService transactionService;
     private static final String PRIMARY_ACCOUNT = "primaryAccount";
     private static final String SAVINGS_ACCOUNT = "savingsAccount";
     private static final String ACCOUNT_TYPE = "accountType";
     private static final String AMOUNT = "amount";
+    private static final String PRIMARY_TRANS_LIST = "primaryTransactionList";
+    private static final String SAVINGS_TRANS_LIST = "savingsTransactionList";
+
+
 
 
 
@@ -43,14 +48,24 @@ public class AccountController {
 
 
 
+    @Autowired
+    public void setTransactionService(TransactionService transactionService) {
+        this.transactionService = transactionService;
+    }
+
 
 
     @GetMapping("/primaryAccount")
     public String primaryAccount(Principal principal , Model model){
 
+        List<PrimaryTransaction> primaryTransactionList =
+                transactionService.findPrimaryTransactionList(principal.getName());
+
+
         User user = userService.findByUsername(principal.getName());
         PrimaryAccount primaryAccount = user.getPrimaryAccount();
         model.addAttribute(PRIMARY_ACCOUNT , primaryAccount);
+        model.addAttribute(PRIMARY_TRANS_LIST, primaryTransactionList);
 
         return  "primaryAccount";
     }
@@ -63,9 +78,12 @@ public class AccountController {
     @GetMapping("/savingsAccount")
     public String savingAccount(Principal principal , Model model){
 
+        List<SavingTransaction> savingTransactions = transactionService.findSavingTransactionList(principal.getName());
+
         User user = userService.findByUsername(principal.getName());
         SavingAccount savingAccount = user.getSavingAccount();
         model.addAttribute(SAVINGS_ACCOUNT , savingAccount);
+        model.addAttribute(SAVINGS_TRANS_LIST , savingTransactions);
 
         return "savingsAccount";
     }
