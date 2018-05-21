@@ -104,6 +104,46 @@ public class AccountServiceImpl implements AccountService {
 
 
 
+
+
+    @Override
+    public void withdraw(String accountType, double v, Principal principal) {
+
+        User user = userService.findByUsername(principal.getName());
+
+        if(accountType.equalsIgnoreCase("Primary")){
+            PrimaryAccount primaryAccount = user.getPrimaryAccount();
+            primaryAccount.setAccountBalance(primaryAccount.getAccountBalance().subtract(new BigDecimal(v)));
+            primaryAccountDao.save(primaryAccount);
+
+            Date date = new Date();
+            PrimaryTransaction pt = new PrimaryTransaction(date ,
+                    "Withdraw from primary Account",
+                    "Account",
+                    "Finished",
+                    v,
+                    primaryAccount.getAccountBalance(),
+                    primaryAccount);
+        }
+
+
+        else if(accountType.equalsIgnoreCase("Saving")){
+            SavingAccount savingAccount = user.getSavingAccount();
+            savingAccount.setAccountBalance(savingAccount.getAccountBalance().subtract(new BigDecimal(v)));
+            savingAccountDao.save(savingAccount);
+
+            Date date = new Date();
+            SavingTransaction savingTransaction = new SavingTransaction(date ,
+                    "Withdraw from savings account",
+                    "Account",
+                    "Finished",
+                    v,
+                    savingAccount.getAccountBalance(),
+                    savingAccount);
+        }
+    }
+
+
     private int accountGen() {
         return ++nextAccountNumber;
     }

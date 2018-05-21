@@ -44,6 +44,7 @@ public class AccountController {
 
 
 
+
     @GetMapping("/primaryAccount")
     public String primaryAccount(Principal principal , Model model){
 
@@ -53,6 +54,8 @@ public class AccountController {
 
         return  "primaryAccount";
     }
+
+
 
 
 
@@ -89,6 +92,32 @@ public class AccountController {
                               ){
 
         accountService.deposit(accountType , Double.parseDouble(amount) , principal);
+        return "redirect:/userFront";
+    }
+
+
+
+
+    @GetMapping("/withdraw")
+    public String withdraw(Model model){
+        model.addAttribute(ACCOUNT_TYPE , "");
+        model.addAttribute(AMOUNT , "");
+        return "withdraw";
+    }
+
+
+
+
+    @PostMapping("/withdraw")
+    public String withdrawPost(@ModelAttribute(ACCOUNT_TYPE) String accountType,
+                               @ModelAttribute(AMOUNT) String amount,
+                               Principal principal){
+
+
+        accountService.withdraw(accountType ,
+                Double.parseDouble(amount),
+                principal);
+
         return "redirect:/userFront";
     }
 }
