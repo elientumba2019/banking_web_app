@@ -1,18 +1,18 @@
 package com.example.banksys.user.service;
 
 
-import com.example.banksys.user.dao.PrimaryAccountDao;
-import com.example.banksys.user.dao.PrimaryTransactionDao;
-import com.example.banksys.user.dao.SavingAccountDao;
-import com.example.banksys.user.dao.SavingTransactionDao;
+import com.example.banksys.user.dao.*;
 import com.example.banksys.user.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -24,7 +24,15 @@ public class TransactionServiceIMpl implements TransactionService {
     private PrimaryTransactionDao primaryTransactionDao;
     private PrimaryAccountDao primaryAccountDao;
     private SavingAccountDao savingAccountDao;
+    private RecipientDao recipientDao;
 
+
+
+
+    @Autowired
+    public void setRecipientDao(RecipientDao recipientDao) {
+        this.recipientDao = recipientDao;
+    }
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -153,5 +161,39 @@ public class TransactionServiceIMpl implements TransactionService {
         else {
             throw new Exception("Invalid Transfer");
         }
+    }
+
+
+
+
+
+
+    @Override
+    public List<Recipient> findRecipientList(Principal principal) {
+        String username = principal.getName();
+        return recipientDao.findAll().stream()
+                .filter(recipient -> username.equals(recipient.getUser().getUsername()))
+                .collect(Collectors.toList());
+    }
+
+
+
+    @Override
+    public void saveRecipient(Recipient recipient) {
+        recipientDao.save(recipient);
+    }
+
+
+
+    @Override
+    public Recipient findRecipientByName(String recipientName) {
+        return recipientDao.findByName(recipientName);
+    }
+
+
+
+    @Override
+    public void deleteRecipient(String recipientName) {
+        recipientDao.deleteByName(recipientName);
     }
 }

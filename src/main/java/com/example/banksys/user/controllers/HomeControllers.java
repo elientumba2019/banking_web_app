@@ -42,6 +42,7 @@ public class HomeControllers {
     }
 
 
+
     @GetMapping("/")
     public String home(){
         return "redirect:/index";
@@ -49,10 +50,12 @@ public class HomeControllers {
 
 
 
+
     @GetMapping("/index")
     public String index(){
         return "index";
     }
+
 
 
 

@@ -11,7 +11,7 @@ public class Recipient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private Long id;
 
     private String name;
     private String email;
@@ -25,11 +25,11 @@ public class Recipient {
     private User user;
 
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -2,6 +2,7 @@ package com.example.banksys.user.controllers;
 
 
 import com.example.banksys.user.domain.PrimaryAccount;
+import com.example.banksys.user.domain.Recipient;
 import com.example.banksys.user.domain.SavingAccount;
 import com.example.banksys.user.domain.User;
 import com.example.banksys.user.service.TransactionService;
@@ -9,12 +10,12 @@ import com.example.banksys.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.jws.WebParam;
+import javax.transaction.Transactional;
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping("/transfer")
@@ -27,6 +28,9 @@ public class TransferController {
     private static final String TRANSFER_FROM = "transferFrom";
     private static final String TRANSFER_TO = "transferTo";
     private static final String AMOUNT = "amount";
+    private static final String RECIPIENT_LIST = "recipientList";
+    private static final String RECIPIENT = "recipient";
+    private static final String RECIPIENT_NAME = "recipientName";
 
 
     @Autowired
@@ -54,6 +58,7 @@ public class TransferController {
 
 
 
+
     @PostMapping("/betweenAccounts")
     public String betweenAccountsPost(
             @ModelAttribute(TRANSFER_FROM) String from,
@@ -68,6 +73,78 @@ public class TransferController {
         transactionService.betweenAccountsTransfer(from, to, amount, primaryAccount, savingAccount);
 
         return "redirect:/userFront";
+    }
+
+
+
+
+    @GetMapping("/recipient")
+    public String recipient(Model model, Principal principal){
+        List<Recipient> recipients = transactionService.findRecipientList(principal);
+        Recipient recipient = new Recipient();
+
+        model.addAttribute(RECIPIENT_LIST, recipients);
+        model.addAttribute(RECIPIENT, recipient);
+
+        return "recipient";
+    }
+
+
+
+
+    @PostMapping("/recipient/save")
+    public String recipientPost(
+            @ModelAttribute(RECIPIENT)
+                    Recipient recipient,
+            Principal principal){
+
+        User user = userService.findByUsername(principal.getName());
+        recipient.setUser(user);
+        transactionService.saveRecipient(recipient);
+
+        return "redirect:/transfer/recipient";
+    }
+
+
+
+
+
+    @GetMapping("/recipient/edit")
+    public String recipientEdit(
+            @RequestParam(value = RECIPIENT_NAME) String recipientName,
+            Model model,
+            Principal principal
+    ){
+
+
+        Recipient recipient = transactionService.findRecipientByName(recipientName);
+        List<Recipient> recipients = transactionService.findRecipientList(principal);
+
+        model.addAttribute(RECIPIENT_LIST, recipients);
+        model.addAttribute(RECIPIENT, recipient);
+
+        return "recipient";
+    }
+
+
+
+
+
+    @GetMapping("/recipient/delete")
+    @Transactional
+    public String recipientDelete(
+            @RequestParam(RECIPIENT_NAME) String recipientName,
+            Model model,
+            Principal principal){
+
+        transactionService.deleteRecipient(recipientName);
+        List<Recipient> recipientList = transactionService.findRecipientList(principal);
+
+        Recipient recipient = new Recipient();
+        model.addAttribute(RECIPIENT, recipient);
+        model.addAttribute(RECIPIENT_LIST , recipientList);
+
+        return "recipient";
     }
 }
 

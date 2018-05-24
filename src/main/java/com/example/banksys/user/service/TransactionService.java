@@ -1,10 +1,8 @@
 package com.example.banksys.user.service;
 
-import com.example.banksys.user.domain.PrimaryAccount;
-import com.example.banksys.user.domain.PrimaryTransaction;
-import com.example.banksys.user.domain.SavingAccount;
-import com.example.banksys.user.domain.SavingTransaction;
+import com.example.banksys.user.domain.*;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface TransactionService {
@@ -17,4 +15,12 @@ public interface TransactionService {
     void saveSavingWithdrawTransaction(SavingTransaction st);
 
     void betweenAccountsTransfer(String from, String to, String amount, PrimaryAccount primaryAccount, SavingAccount savingAccount) throws Exception;
+
+    List<Recipient> findRecipientList(Principal principal);
+
+    void saveRecipient(Recipient recipient);
+
+    Recipient findRecipientByName(String recipientName);
+
+    void deleteRecipient(String recipientName);
 }
