@@ -1,7 +1,5 @@
 package com.example.banksys.user.domain;
 
-import org.hibernate.annotations.ManyToAny;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -16,7 +14,7 @@ public class SavingTransaction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Date date;
-    private String desciption;
+    private String description;
     private String type;
     private String status;
     private double amount;
@@ -31,22 +29,22 @@ public class SavingTransaction {
     public SavingTransaction(){}
 
 
-    public SavingTransaction(Date date, String desciption) {
+    public SavingTransaction(Date date, String description) {
         this.date = date;
-        this.desciption = desciption;
+        this.description = description;
     }
 
 
 
     public SavingTransaction(Date date,
-                             String desciption,
+                             String description,
                              String type,
                              String status,
                              double amount,
                              BigDecimal availableBalance,
                              SavingAccount savingAccount) {
         this.date = date;
-        this.desciption = desciption;
+        this.description = description;
         this.type = type;
         this.status = status;
         this.amount = amount;
@@ -71,12 +69,12 @@ public class SavingTransaction {
         this.date = date;
     }
 
-    public String getDesciption() {
-        return desciption;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesciption(String desciption) {
-        this.desciption = desciption;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getType() {
