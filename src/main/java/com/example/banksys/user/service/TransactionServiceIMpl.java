@@ -192,8 +192,49 @@ public class TransactionServiceIMpl implements TransactionService {
 
 
 
+
     @Override
     public void deleteRecipient(String recipientName) {
         recipientDao.deleteByName(recipientName);
+    }
+
+
+
+    @Override
+    public void toSomeoneElseTransfer(Recipient recipient, String accountType, String amount, PrimaryAccount primaryAccount, SavingAccount savingAccount) {
+        if(accountType.equalsIgnoreCase("Primary")){
+            primaryAccount.setAccountBalance(primaryAccount.getAccountBalance().subtract(new BigDecimal(amount)));
+            primaryAccountDao.save(primaryAccount);
+
+            Date date = new Date();
+            PrimaryTransaction primaryTransaction = new PrimaryTransaction(
+                    date,
+                    "Transfer to recipient : " + recipient.getName(),
+                    "Transfer",
+                    "Terminated",
+                    Double.valueOf(amount),
+                    primaryAccount.getAccountBalance(),
+                    primaryAccount
+            );
+            primaryTransactionDao.save(primaryTransaction);
+        }
+
+
+        else if(accountType.equalsIgnoreCase("Savings")){
+            savingAccount.setAccountBalance(savingAccount.getAccountBalance().subtract(new BigDecimal(amount)));
+            savingAccountDao.save(savingAccount);
+
+            Date date = new Date();
+            SavingTransaction savingTransaction = new SavingTransaction(
+                    date,
+                    "Transfer from saving to :" + recipient.getName(),
+                    "Transfer",
+                    "Terminated",
+                    Double.valueOf(amount),
+                    savingAccount.getAccountBalance(),
+                    savingAccount
+            );
+            savingTransactionDao.save(savingTransaction);
+        }
     }
 }

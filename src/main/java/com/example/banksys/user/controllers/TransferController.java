@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import javax.jws.WebParam;
 import javax.transaction.Transactional;
 import java.security.Principal;
 import java.util.List;
@@ -31,6 +29,7 @@ public class TransferController {
     private static final String RECIPIENT_LIST = "recipientList";
     private static final String RECIPIENT = "recipient";
     private static final String RECIPIENT_NAME = "recipientName";
+    private static final String ACCOUNT_TYPE = "accountType";
 
 
     @Autowired
@@ -145,6 +144,37 @@ public class TransferController {
         model.addAttribute(RECIPIENT_LIST , recipientList);
 
         return "recipient";
+    }
+
+
+
+
+    @GetMapping("/toSomeoneElse")
+    public String toSomeoneElse(Model model , Principal principal){
+        List<Recipient> recipients = transactionService.findRecipientList(principal);
+        model.addAttribute(RECIPIENT_LIST, recipients);
+        model.addAttribute(ACCOUNT_TYPE , "");
+        return "toSomeoneElse";
+    }
+
+
+
+
+    @PostMapping("/toSomeoneElse")
+    public String toSomeomeElsePost(
+            @ModelAttribute(RECIPIENT_NAME) String recipientName,
+            @ModelAttribute(ACCOUNT_TYPE) String accountType,
+            @ModelAttribute(AMOUNT) String amount,
+            Principal principal
+    ){
+
+
+        User user = userService.findByUsername(principal.getName());
+        Recipient recipient = transactionService.findRecipientByName(recipientName);
+        transactionService.toSomeoneElseTransfer(recipient, accountType, amount, user.getPrimaryAccount(), user.getSavingAccount());
+
+
+        return "redirect:/userFront";
     }
 }
 
