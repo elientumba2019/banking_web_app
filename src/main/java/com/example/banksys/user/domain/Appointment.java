@@ -12,7 +12,7 @@ public class Appointment {
 
     private Date date;
     private String location;
-    private String desciption;
+    private String description;
     private boolean confirmed;
 
 
@@ -45,12 +45,12 @@ public class Appointment {
         this.location = location;
     }
 
-    public String getDesciption() {
-        return desciption;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesciption(String desciption) {
-        this.desciption = desciption;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public boolean isConfirmed() {
