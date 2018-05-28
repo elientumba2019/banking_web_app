@@ -7,12 +7,14 @@ import com.example.banksys.user.domain.User;
 import com.example.banksys.user.service.TransactionService;
 import com.example.banksys.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@PreAuthorize("hasRole('ADMIN')")
 public class UserResource {
 
 
